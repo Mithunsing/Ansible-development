@@ -1,5 +1,5 @@
 ---
-- name: Verify latest CNOM configuration backup
+- name: Verify latest  configuration backup
   hosts: localhost
   tasks:
     - name: Check if CNOM backup directory exists
