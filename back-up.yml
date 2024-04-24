@@ -2,6 +2,9 @@
 - name: Verify latest configuration backup
   hosts: localhost
   tasks:
+    - name: Execute ENM healthcheck
+      command: /opt/ericsson/enminst/bin/enm_healthcheck.sh -v
+      
     - name: Check if CNOM backup directory exists
       # stat: Checks if the CNOM backup directory exists
       stat:
