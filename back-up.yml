@@ -1,9 +1,9 @@
 ---
-- name: Verify latest  configuration backup
+- name: Verify latest configuration backup
   hosts: localhost
   tasks:
     - name: Check if CNOM backup directory exists
-    #stat: Checks if the CNOM backup directory exists
+      # stat: Checks if the CNOM backup directory exists
       stat:
         path: /var/opt/ericsson/cnom/cnom_backups
       register: backup_dir_stat
@@ -19,17 +19,15 @@
       args:
         executable: /bin/bash
 
-    - name: Printing the backup file
-      debug:
-       var: backup_files
+    # Redundant debug task removed
 
     - name: Print the content of the file
       debug:
-       var: "{{ backup_files.stdout }}"
+        var: backup_files.stdout
 
     - name: Save backup file list to a log file
       copy:
-        src: "{{ backup_files.stdout }}"
+        src: "/var/opt/ericsson/cnom/cnom_backups"
         dest: "/tmp/automation/logs/cnom_backup_{{ ansible_date_time.date }}.log"
 
     - name: Check if backup file is available
@@ -40,6 +38,3 @@
     - name: Print the latest backup file name
       debug:
         msg: "Latest CNOM configuration backup: {{ backup_files.stdout_lines[-1].split()[-1] }}"
-
-
-
