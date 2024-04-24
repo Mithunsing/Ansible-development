@@ -17,7 +17,7 @@
       when: not backup_dir_stat.stat.exists
 
     - name: List backup files
-      shell: "ls -lrt /var/opt/ericsson/cnom/cnom_backups"
+      shell: "ls /var/opt/ericsson/cnom/cnom_backups"
       register: backup_files
       args:
         executable: /bin/bash
