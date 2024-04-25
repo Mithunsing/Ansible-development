@@ -14,7 +14,7 @@
 
 - name: Extract required RPMs
   ansible.builtin.shell:
-    cmd: "tar -zxvf /tmp/cnom/ERICcnomservice_cxp9035679_<version>_ENM.tar.gz ERICcnomservice_cxp9035679-*.rpm ERICebmserver_cxp9035679-*.rpm -C /tmp/cnom"
+    cmd: "tar -zxvf /tmp/cnom/ERICcnomservice_cxp9035679_{{ version_number }}_ENM.tar.gz ERICcnomservice_cxp9035679-*.rpm ERICebmserver_cxp9035679-*.rpm -C /tmp/cnom"
     args:
       chdir: /tmp/cnom
 
