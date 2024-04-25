@@ -1,3 +1,7 @@
+- name: Include variable file
+  include_vars:
+    file: vars.yml
+
 - name: Create folder /tmp/cnom
   ansible.builtin.file:
     path: /tmp/cnom
