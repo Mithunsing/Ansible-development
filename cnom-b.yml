@@ -1,0 +1,48 @@
+- name: Create folder /tmp/cnom
+  ansible.builtin.file:
+    path: /tmp/cnom
+    state: directory
+
+- name: Transfer downloaded file
+  ansible.builtin.copy:
+    src: "path/to/downloaded/file.tar.gz"
+    dest: /tmp/cnom
+
+- name: Extract required RPMs
+  ansible.builtin.shell:
+    cmd: "tar -zxvf /tmp/cnom/ERICcnomservice_cxp9035679_<version>_ENM.tar.gz ERICcnomservice_cxp9035679-*.rpm ERICebmserver_cxp9035679-*.rpm -C /tmp/cnom"
+    args:
+      chdir: /tmp/cnom
+
+- name: Create folder for imported RPMs
+  ansible.builtin.file:
+    path: /var/www/html/cnom
+    state: directory
+
+# - name: Check CNOM server OS version
+#   ansible.builtin.shell:
+#     cmd: "ssh -i </path/to/ssh/key> cloud-user@cnom cat /etc/redhat-release"
+#   register: os_version
+
+- name: Add RPMs to CNOM yum repository
+  ansible.builtin.shell:
+    cmd: "litp import /tmp/cnom/{{ os_version.stdout_lines[0].split()[-1] }} /var/www/html/cnom"
+  when: "'Linux Server release 7' in os_version.stdout"
+
+- name: Create plan
+  ansible.builtin.shell:
+    cmd: "litp create_plan"
+  args:
+    chdir: /var/www/html/cnom
+
+- name: Run plan
+  ansible.builtin.shell:
+    cmd: "litp run_plan"
+  args:
+    chdir: /var/www/html/cnom
+
+- name: Check if plan runs successfully
+  ansible.builtin.shell:
+    cmd: "litp show_plan"
+  args:
+    chdir: /var/www/html/cnom
