@@ -22,16 +22,11 @@
       args:
         executable: /bin/bash
 
-    # Redundant debug task removed
-
-    - name: Print the content of the file
-      debug:
-        var: backup_files.stdout
-
     - name: Save backup file list to a log file
-      copy:
-        src: "/var/opt/ericsson/cnom/cnom_backups"
-        dest: "/tmp/automation/logs/cnom_backup_{{ ansible_date_time.date }}.log"
+      shell: "ls /var/opt/ericsson/cnom/cnom_backups >> /tmp/automation/logs/cnom_backup_{{ ansible_date_time.date }}.log"
+      args:
+        executable: /bin/bash
+      ignore_errors: yes
 
     - name: Check if backup file is available
       fail:
