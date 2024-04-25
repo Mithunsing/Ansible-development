@@ -46,3 +46,21 @@
     cmd: "litp show_plan"
   args:
     chdir: /var/www/html/cnom
+
+
+- name: Open browser to verify CNOM Web GUI accessibility
+  ansible.builtin.uri:
+    url: "http://{{ cnom_server_ip }}/cnom"  # Replace cnom_server_ip with actual IP or hostname
+    method: GET
+  delegate_to: localhost
+  ignore_errors: yes
+  register: response
+
+- name: Display response status
+  ansible.builtin.debug:
+    var: response.status
+
+- name: Remove created folders and mounts
+  ansible.builtin.file:
+    path: /tmp/cnom
+    state: absent
